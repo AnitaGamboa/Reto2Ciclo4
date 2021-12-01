@@ -7,7 +7,6 @@ package r2c4.interfaces;
 
 import java.util.Optional;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.repository.CrudRepository;
 import r2c4.modelos.User;
 
 /**

@@ -19,7 +19,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Gadgets {
+public class Gadget {
 @Id
 private Integer id;
 private String brand;

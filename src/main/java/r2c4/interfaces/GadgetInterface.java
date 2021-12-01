@@ -6,12 +6,12 @@
 package r2c4.interfaces;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
-import r2c4.modelos.Gadgets;
+import r2c4.modelos.Gadget;
 
 /**
  *
  * @author anita // como 
  */
-public interface GadgetInterface extends MongoRepository<Gadgets, String> {
+public interface GadgetInterface extends MongoRepository<Gadget, Integer> {
     
 }

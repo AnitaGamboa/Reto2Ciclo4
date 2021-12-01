@@ -10,7 +10,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import r2c4.interfaces.GadgetInterface;
-import r2c4.modelos.Gadgets;
+import r2c4.modelos.Gadget;
 
 /**
  *
@@ -22,27 +22,22 @@ public class GadgetRepository {
     @Autowired
     private GadgetInterface repository;
 
-    public List<Gadgets> getAll() {
-        return repository.findAll();
+    public List<Gadget> getAll() {
+        return (List<Gadget>) repository.findAll();
     }
 
-    public Optional<Gadgets> getGadget(String brand) {
-        return repository.findById(brand);
+    public Optional<Gadget> getById(int id) {
+        return repository.findById(id);
     }
 
-    public Gadgets create(Gadgets gadgets) {
-        return repository.save(gadgets);
+    public Gadget save(Gadget gadget) {
+        return repository.save(gadget);
     }
+public void update(Gadget gadget) {
+        repository.save(gadget);
+}
 
-    public void update(Gadgets gadgets) {
-        repository.save(gadgets);
-    }
-
-    public void delete(Gadgets gadgets) {
-        repository.delete(gadgets);
-    }
-
-    public Optional<Gadgets> getGadget(int id) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void delete(Gadget gadget) {
+        repository.delete(gadget);
     }
 }

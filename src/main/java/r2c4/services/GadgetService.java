@@ -7,85 +7,97 @@ package r2c4.services;
 
 import java.util.List;
 import java.util.Optional;
-import static jdk.nashorn.internal.runtime.Debug.id;
 import org.springframework.beans.factory.annotation.Autowired;
-import r2c4.modelos.Gadgets;
+import r2c4.modelos.Gadget;
 import r2c4.repository.GadgetRepository;
-
 
 /**
  *
  * @author anita
  */
-
 public class GadgetService {
-  
-         @Autowired
-    private GadgetRepository gadgetRepository;
-
-    public List<Gadgets> getAll() {
-        return gadgetRepository.getAll();
+    
+    @Autowired
+    private GadgetRepository gRepo;
+    
+    public List<Gadget> getAll() {
+        return gRepo.getAll();
     }
 
-   public Optional<Gadgets> getGadget(int id) {
-        return gadgetRepository.getGadget(id);
+    public Optional<Gadget> getById(int Id) {
+        return gRepo.getById(Id);
     }
 
-    public Gadgets create(Gadgets accesory) {
-        if (accesory.getId() == null) {
-            return accesory;
+    public Gadget save(Gadget gadget) {
+        if (gadget.getId() == null) {
+            return gRepo.save(gadget);
         } else {
-            return gadgetRepository.create(accesory);
+            Optional<Gadget> existGadget = gRepo.getById(gadget.getId());
+            if (existGadget.isPresent()) {
+                return gadget;
+            } else {
+                return gRepo.save(gadget);
+            }
         }
     }
 
-    public Gadgets update(Gadgets accesory) {
+    public Gadget update(Gadget gadget) {
 
-        if (accesory.getId() != null) {
-            Optional<Gadgets> accesoryDb = gadgetRepository.getGadget(accesory.getId());
-            if (!accesoryDb.isPresent()) {
-                
-                if (accesory.getBrand()!= null) {
-                    accesoryDb.get().setBrand(accesory.getBrand());
+        if (gadget.getId() != null) {
+            Optional<Gadget> existGadget = gRepo.getById(gadget.getId());
+            if (!existGadget.isPresent()) {
+
+                if (gadget.getBrand() != null) {
+                    existGadget.get().setBrand(gadget.getBrand());
                 }
-                
-                if (accesory.getCategory() != null) {
-                    accesoryDb.get().setCategory(accesory.getCategory());
+
+                if (gadget.getCategory() != null) {
+                    existGadget.get().setCategory(gadget.getCategory());
                 }
-                if (accesory.getName() != null) {
-                    accesoryDb.get().setName(accesory.getName());
+                if (gadget.getName() != null) {
+                    existGadget.get().setName(gadget.getName());
                 }
-                if (accesory.getDescription() != null) {
-                    accesoryDb.get().setDescription(accesory.getDescription());
+                if (gadget.getDescription() != null) {
+                    existGadget.get().setDescription(gadget.getDescription());
                 }
-                if (accesory.getPrice() != 0.0) {
-                    accesoryDb.get().setPrice(accesory.getPrice());
+                if (gadget.getPrice() != 0.0) {
+                    existGadget.get().setPrice(gadget.getPrice());
                 }
-                           
-                if (accesory.getQuantity() != 0) {
-                    accesoryDb.get().setQuantity(accesory.getQuantity());
+
+                if (gadget.getQuantity() != 0) {
+                    existGadget.get().setQuantity(gadget.getQuantity());
                 }
-                if (accesory.getPhotography() != null) {
-                    accesoryDb.get().setPhotography(accesory.getPhotography());
+                if (gadget.getPhotography() != null) {
+                    existGadget.get().setPhotography(gadget.getPhotography());
                 }
-                accesoryDb.get().setAvailability(accesory.isAvailability());
-                gadgetRepository.update(accesoryDb.get());
-                return accesoryDb.get();
+                /**
+                existGadget.get().setAvailability(gadget.isAvailability());
+                gadgetRepository.update(existGadget.get());
+                * **/
+                return gRepo.save(existGadget.get());
             } else {
-                return accesory;
+                return gadget;
             }
         } else {
-            return accesory;
+            return gadget;
         }
     }
 
-    public boolean delete(String reference) {
-        Boolean aBoolean = getGadget(gadget).map(accesory -> {
+      public void delete(Integer Id) {
+        //si obtiene el id, se borra y devuelve true
+        Optional<Gadget> ov = gRepo.getById(Id);
+        if (ov.isPresent()) {
+            gRepo.delete(ov.get());
+        }
+    }
+    
+    /**
+     public boolean delete(Integer id) {
+        Boolean aBoolean = getById(id).map(accesory -> {
             gadgetRepository.delete(accesory);
             return true;
         }).orElse(false);
         return aBoolean;
     }
-    
-    
+    * **/
 }

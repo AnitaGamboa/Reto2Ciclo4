@@ -6,9 +6,10 @@
 package reto2c4.controller;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,51 +19,56 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-import r2c4.modelos.Gadgets;
+import r2c4.modelos.Gadget;
 import r2c4.services.GadgetService;
 
 /**
  *
  * @author anita
  */
+
 @RestController
 @RequestMapping("/api/gadget")
-@CrossOrigin("*")
-public class GadgetController {
-    @Autowired
-    private GadgetService gadgetService;
-            
-     @GetMapping("/all")
-    public List<Gadgets> getAll() {
-        return gadgetService.getAll();
-    }
-    //Registrar usuario
 
+public class GadgetController {
+    
+    @Autowired
+    GadgetService service;
+    
+  @GetMapping("/all")
+    public List<Gadget> getAll() {
+        return service.getAll();
+    }
+
+    // traer gadget por id
+    @GetMapping("/{id}")
+    public Optional<Gadget> getById(@PathVariable("id") Integer id) {
+        return service.getById(id);
+    }
+
+    //Registrar gadget
     @PostMapping("/new")
     @ResponseStatus(HttpStatus.CREATED)
-    public Gadgets create(@RequestBody Gadgets gadget) {
-        return gadgetService.create(gadget);
-    }
-/**
- * 
- * @param reference
- * @return 
- *  @GetMapping("/{reference}") R E V I S A R 
-    public Optional<Gadgets> getClothe(@PathVariable("reference") String reference) {
-        return gadgetService.getClothe(reference);
-    }
- */
-   @PutMapping("/update")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Gadgets update(@RequestBody Gadgets gadget) {
-        return gadgetService.update(gadget);
+    public Gadget save(@RequestBody Gadget gadget) {
+        return service.save(gadget);
     }
 
-    @DeleteMapping("/{reference}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public boolean delete(@PathVariable("reference") String reference) {
-        return gadgetService.delete(reference);
-    } 
-    
+    @PutMapping("/update")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Gadget update(@RequestBody Gadget gadget) {
+        return service.update(gadget);
+    }
+
+    /**
+     * @DeleteMapping("/{id}") public ResponseEntity delete(@PathVariable ("id")
+     * int id){ gadgetService.delete(id); return new
+     * ResponseEntity(HttpStatus.NO_CONTENT); }  
+   * *
+     */
+    @DeleteMapping("/{id}") 
+    public ResponseEntity delete(@PathVariable ("id") int id){ 
+        service.delete(id); 
+        return new  ResponseEntity(HttpStatus.NO_CONTENT); 
+    }
 
 }
